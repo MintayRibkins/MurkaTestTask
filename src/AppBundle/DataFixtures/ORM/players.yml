@@ -1,0 +1,11 @@
+AppBundle\Entity\Player:
+    player_{1..50}:
+      name: '<firstName()> <lastName()>'
+      ratingElo: '<numberBetween(0, 10)>'
+
+AppBundle\Entity\Match:
+    match_{1..1000}:
+        startTime: '<dateTimeBetween("-200 days", "now")>'
+        finishTime: '<dateTimeInInterval($startTime, "+2 hours")>'
+        players (unique): '2x @player*'
+        randomWinner: '<numberBetween(0, 1)>'
