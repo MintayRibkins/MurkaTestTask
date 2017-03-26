@@ -15,11 +15,11 @@ class MatchController extends FOSRestController
 {
     /**
      * @ApiDoc()
-     * @Rest\Route("matches/{id}", methods={"GET"})
+     * @Rest\Route("matches/{id}")
      * @ParamConverter("match", class="AppBundle:Match")
      * @Rest\View()
      */
-    public function viewAction(Match $match)
+    public function getMatchAction(Match $match)
     {
         return $match;
     }
@@ -33,10 +33,10 @@ class MatchController extends FOSRestController
      *     400 = "Returned when the form has errors"
      *   }
      * )
-     * @Rest\Route("matches", methods={"POST"})
+     * @Rest\Route("matches")
      * @Rest\View()
      */
-    public function newAction(Request $request)
+    public function postMatchAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         /* @var $em EntityManagerInterface */
@@ -58,23 +58,45 @@ class MatchController extends FOSRestController
     }
 
     /**
-     * @ApiDoc()
-     * @Rest\Route("matches/{id}", methods={"POST"})
+     * Update existing match from the submitted data.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   input = "AppBundle\Form\MatchType",
+     *   statusCodes = {
+     *     204 = "Returned when successful",
+     *     400 = "Returned when the form has errors"
+     *   }
+     * )
+     *
+     * @Rest\Route("matches/{id}")
      * @ParamConverter("match", class="AppBundle:Match")
      * @Rest\View()
      */
-    public function editAction(Match $match)
+    public function patchMatchAction(Request $request, Match $match)
     {
-        return $match;
+        $em = $this->getDoctrine()->getManager();
+        /* @var $em EntityManagerInterface */
+
+        $form = $this->createForm(MatchType::class, $match, array('method' => 'PATCH'));
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em->flush();
+
+            return $match;
+        }
+
+        return $form;
     }
 
     /**
      * @ApiDoc()
-     * @Rest\Route("matches/{id}", methods={"DELETE"})
+     * @Rest\Route("matches/{id}")
      * @ParamConverter("match", class="AppBundle:Match")
      * @Rest\View()
      */
-    public function deleteAction(Match $match)
+    public function deleteMatchAction(Match $match)
     {
         $em = $this->getDoctrine()->getManager();
         /* @var $em EntityManagerInterface */
