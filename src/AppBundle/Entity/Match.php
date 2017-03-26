@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Collection;
 
 /**
  * @ORM\Entity()
@@ -29,8 +30,8 @@ class Match
     private $finishTime;
 
     /**
-     * @ORM\OneToMany(targetEntity="MatchPlayer", mappedBy="match")
-     * @var MatchPlayer[]
+     * @ORM\OneToMany(targetEntity="MatchPlayer", mappedBy="match", cascade={"persist"})
+     * @var MatchPlayer[]|ArrayCollection
      */
     private $matchPlayers;
 
@@ -48,7 +49,8 @@ class Match
 
     public function __construct()
     {
-        $this->matchPalyers = new ArrayCollection();
+        $this->matchPlayers = new ArrayCollection();
+        $this->matchLog = '';
     }
 
     /**
@@ -99,14 +101,48 @@ class Match
         return $this->matchPlayers;
     }
 
-    /**
-     * @param MatchPlayer[] $matchPlayers
-     */
-    public function setMatchPlayers($matchPlayers)
+    public function addMatchPlayer(MatchPlayer $matchPlayer)
     {
-        $this->matchPlayers = $matchPlayers;
+        $matchPlayer->setMatch($this);
+        $this->matchPlayers->add($matchPlayer);
+
     }
 
+    public function removeMatchPlayer(MatchPlayer $matchPlayer)
+    {
+        $this->matchPlayers->removeElement($matchPlayer);
+    }
+
+    /**
+     * @return Player[]
+     */
+    public function getPlayers()
+    {
+        $players = array();
+        foreach ($this->matchPlayers as $matchPlayer) {
+            $players[] = $matchPlayer->getPlayer();
+        }
+
+        return $players;
+    }
+
+    public function addPlayer(Player $player)
+    {
+        $matchPlayer = new MatchPlayer();
+        $matchPlayer->setPlayer($player);
+        $this->addMatchPlayer($matchPlayer);
+    }
+
+    public function removePlayer(Player $player)
+    {
+        //TODO: implement
+    }
+
+    public function setRandomWinner($key)
+    {
+        $players = $this->getPlayers();
+        $this->setWinner($players[$key]);
+    }
 
     /**
      * @return Player

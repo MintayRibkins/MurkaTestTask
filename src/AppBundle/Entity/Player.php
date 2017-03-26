@@ -18,6 +18,11 @@ class Player
     private $id;
 
     /**
+     * @ORM\Column()
+     */
+    private $name;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $ratingElo;
@@ -45,6 +50,23 @@ class Player
     {
         $this->ratingElo = $ratingElo;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
 
 
 }
