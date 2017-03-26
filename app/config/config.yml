@@ -68,3 +68,27 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+fos_rest:
+    disable_csrf_role: IS_AUTHENTICATED_ANONYMOUSLY
+    param_fetcher_listener: force
+    view:
+        view_response_listener: true
+#        view_response_listener: force
+        force_redirects:
+            html: true
+        formats:
+            json: true
+        mime_types:
+            json: ['application/json', 'application/x-json', 'application/vnd.example-com.foo+json']
+        templating_formats:
+            html: true
+#    routing_loader:
+#        default_format: html
+    format_listener:
+        rules:
+            - { path: ^/, priorities: [ json ], fallback_format: json, prefer_extension: true }
+    routing_loader:
+        default_format: json
+
+nelmio_api_doc: ~

@@ -1,3 +1,9 @@
 app:
     resource: '@AppBundle/Controller/'
-    type: annotation
+    type: rest
+
+#TODO: create redirect from index page to doc http://symfony.com/doc/current/routing/redirect_in_config.html
+
+NelmioApiDocBundle:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix: /api/doc
