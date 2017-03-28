@@ -15,14 +15,16 @@ class MatchesController extends Controller
 {
 
     /**
+     * Get existing matches from database with using filters.
+     *
      * @ApiDoc()
      * @Rest\Route("/matches")
      * @Rest\QueryParam(name="page", requirements="\d+", default="1")
      * @Rest\QueryParam(name="player", requirements="\d+")
      * @Rest\QueryParam(name="date_from", requirements="\d\d\.\d\d\.\d\d\d\d", default=null, allowBlank=true)
      * @Rest\QueryParam(name="date_to", requirements="\d\d\.\d\d\.\d\d\d\d", default=null, allowBlank=true)
-     * @ParamConverter("date_from", class="DateTime", converter="datetime", options={"format": "d.m.Y"})
-     * @ParamConverter("date_to", class="DateTime", converter="datetime", options={"format": "d.m.Y"})
+     * @ParamConverter("date_from", class="DateTime", converter="datetime", isOptional=true, options={"format": "d.m.Y"})
+     * @ParamConverter("date_to", class="DateTime", converter="datetime", isOptional=true, options={"format": "d.m.Y"})
      * @Rest\View()
      */
     public function listAction(Request $request, $page = 1, $player = null)

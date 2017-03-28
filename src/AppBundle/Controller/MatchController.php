@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Request;
 class MatchController extends FOSRestController
 {
     /**
+     * Get concrete match;
+     *
      * @ApiDoc()
      * @Rest\Route("matches/{id}")
      * @ParamConverter("match", class="AppBundle:Match")
@@ -25,6 +27,8 @@ class MatchController extends FOSRestController
     }
 
     /**
+     * Create a new match and save;
+     *
      * @ApiDoc(
      *   resource = true,
      *   input = "AppBundle\Form\MatchType",
@@ -91,6 +95,8 @@ class MatchController extends FOSRestController
     }
 
     /**
+     * Delete existing match from the database.
+     *
      * @ApiDoc()
      * @Rest\Route("matches/{id}")
      * @ParamConverter("match", class="AppBundle:Match")
